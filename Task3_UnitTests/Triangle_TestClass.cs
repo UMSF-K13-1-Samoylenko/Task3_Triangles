@@ -28,6 +28,7 @@ namespace Task3_UnitTests
         [DataRow(3, 3, 3, (float)3.9)]
         public void Square_InputCorrect(float a, float b, float c, float expected)
         {
+            // Arrange
             SquareField squareFieldA = new SquareField
             {
                 Value = a
@@ -41,7 +42,12 @@ namespace Task3_UnitTests
                 Value = c
             };
             Triangle triangle = new Triangle("test", squareFieldA, squareFieldB, squareFieldC);
-            Assert.AreEqual(expected, (float)Math.Round(triangle.Square, 2));
+
+            // Actual
+            float actual = (float)Math.Round(triangle.Square, 2);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
