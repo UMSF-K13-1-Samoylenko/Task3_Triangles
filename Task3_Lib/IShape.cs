@@ -14,7 +14,7 @@ namespace Task3_Lib
         /// <summary>
         /// Gets sqare of shape
         /// </summary>
-        float Square
+        float Area
         {
             get;
         }

@@ -6,6 +6,7 @@ namespace Task3_UI
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Task3_Lib;
 
     /// <summary>
@@ -21,7 +22,7 @@ namespace Task3_UI
         /// <summary>
         /// Separators string array to split args
         /// </summary>
-        private readonly string[] splitSeparators;
+        private readonly char[] splitSeparators;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TrianglesConsoleMenu"/> class
@@ -29,9 +30,10 @@ namespace Task3_UI
         public TrianglesConsoleMenu()
         {
             this.shapes = new List<IShape>();
-            this.splitSeparators = new string[] 
+            this.splitSeparators = new char[] 
             {
-                ", "
+                ',',
+                ' '
             };
         }
 
@@ -81,40 +83,21 @@ namespace Task3_UI
         /// <param name="args">Triangle parts in string view</param>
         /// <returns>Triangle object</returns>
         /// <exception cref="ArgumentsCountException">Throws when count of args is not correct</exception>
+        /// <exception cref="FormatException">Throws when could not convert one of args to Double</exception>
+        /// <exception cref="OverflowException">Throws when converted value was more than doube type value allow</exception>
         private Triangle TriangleConstructor(string[] args)
         {
             if (args.Length == 4)
             {
-                SquareField a = new SquareField
-                {
-                    Value = (float)Convert.ToDouble(args[1])
-                };
-                SquareField b = new SquareField
-                {
-                    Value = (float)Convert.ToDouble(args[2])
-                };
-                SquareField c = new SquareField
-                {
-                    Value = (float)Convert.ToDouble(args[3])
-                };
-                return new Triangle(args[0], a, b, c);
+                return Triangle.Initialize(
+                    args[0],
+                    (float)Convert.ToDouble(args[1]),
+                    (float)Convert.ToDouble(args[2]),
+                    (float)Convert.ToDouble(args[3]));
             }
             else
             {
                 throw new ArgumentsCountException();
-            }
-        }
-
-        /// <summary>
-        /// Method for removing some string from all args[]
-        /// </summary>
-        /// <param name="args">String array to change</param>
-        /// <param name="stringToRemove">String to find and replace with string.empty</param>
-        private void RemoveStrFromArgs(string[] args, string stringToRemove)
-        {
-            for (int i = 0; i < args.Length; i++)
-            {
-                args[i] = args[i].Replace(stringToRemove, string.Empty);
             }
         }
 
@@ -128,9 +111,8 @@ namespace Task3_UI
             {
                 try
                 {
-                    this.RemoveStrFromArgs(args, ",");
+                    args = args.Select(arg => arg.Replace(",", string.Empty)).ToArray();
                     Triangle triangle = this.TriangleConstructor(args);
-                    float test = triangle.Square;
                     this.shapes.Add(triangle);
                     this.SortShapes();
                     this.PrintShapes();
