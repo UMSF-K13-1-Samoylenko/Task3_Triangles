@@ -107,23 +107,29 @@ namespace Task3_UI
         /// <param name="args">Initialized args from console</param>
         private void MenuCycle(string[] args)
         {
+            bool exceptionFlag = false;
             do
             {
                 try
                 {
-                    args = args.Select(arg => arg.Replace(",", string.Empty)).ToArray();
-                    Triangle triangle = this.TriangleConstructor(args);
-                    this.shapes.Add(triangle);
-                    this.SortShapes();
-                    this.PrintShapes();
-                    Console.Write("If you wan to continue please enter \"y\" or \"yes\":");
-                    string input = Console.ReadLine().ToLower();
-                    if (input == "y" || input == "yes")
+                    string input = string.Empty;
+                    if (!exceptionFlag)
+                    {
+                        args = args.Select(arg => arg.Replace(",", string.Empty)).ToArray();
+                        Triangle triangle = this.TriangleConstructor(args);
+                        this.shapes.Add(triangle);
+                        this.SortShapes();
+                        this.PrintShapes();
+                        Console.Write("If you wan to continue please enter \"y\" or \"yes\":");
+                        input = Console.ReadLine().ToLower();
+                    }
+                    if (input == "y" || input == "yes" || exceptionFlag)
                     {
                         Console.Clear();
                         Console.Write("Please enter triangle name and sides values:");
                         input = Console.ReadLine();
                         args = input.Split(this.splitSeparators, StringSplitOptions.RemoveEmptyEntries);
+                        exceptionFlag = false;
                     }
                     else
                     {
@@ -133,22 +139,22 @@ namespace Task3_UI
                 catch (ArgumentOutOfRangeException ex)
                 {
                     Console.WriteLine(ex.Message);
-                    break;
+                    exceptionFlag = true;
                 }
                 catch (OverflowException ex)
                 {
                     Console.WriteLine(ex.Message);
-                    break;
+                    exceptionFlag = true;
                 }
                 catch (FormatException ex)
                 {
                     Console.WriteLine(ex.Message);
-                    break;
+                    exceptionFlag = true;
                 }
                 catch (ArgumentsCountException ex)
                 {
                     Console.WriteLine(ex.Message);
-                    break;
+                    exceptionFlag = true;
                 }
             }
             while (true);

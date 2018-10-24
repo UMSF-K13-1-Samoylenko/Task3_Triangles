@@ -26,7 +26,7 @@ namespace Task3_UnitTests
         [DataRow(5, 5, 6, 12)]
         [DataRow((float)1.2, (float)2.2, (float)3.3, (float)0.64)]
         [DataRow(3, 3, 3, (float)3.9)]
-        public void Square_InputCorrect(float a, float b, float c, float expected)
+        public void Area_InputCorrect(float a, float b, float c, float expected)
         {
             // Arrange
             Triangle triangle = Triangle.Initialize("test", a, b, c);
